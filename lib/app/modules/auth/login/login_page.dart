@@ -1,15 +1,40 @@
 
 import 'package:agenda/app/core/helpers/new_page.dart';
+import 'package:agenda/app/core/notifier/default_listener_notifier.dart';
 import 'package:agenda/app/core/widget/agenda_field.dart';
 import 'package:agenda/app/core/widget/agenda_logo.dart';
+import 'package:agenda/app/modules/auth/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:provider/provider.dart';
+import 'package:validatorless/validatorless.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  final _formKey = GlobalKey<FormState>();
+  final _emailEC = TextEditingController();
+  final _passwordEC = TextEditingController();
   
+
+  @override
+  void initState() {
+    
+    super.initState();
+    DefaultListenerNotifier(changeNotifier: context.read<LoginController>()).
+    listener(context: context, succesCallback: ((notifier, listenerInstance) {
+      print('login efetuado com sucesso');
+    }),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +58,25 @@ class LoginPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40, vertical: 20),
                       child: Form(
+                        key: _formKey,
                         child: Column(
                           children: [
-                            AgendaField(label: 'Email',),
+                            AgendaField(label: 'Email',
+                            controller: _emailEC,
+                            validator: Validatorless.multiple([
+                              Validatorless.required('E-mail Obrigatório'),
+                              Validatorless.email('E-mail inválido')
+                            ]),),                            
                             const SizedBox(
                               height: 20,
                             ),
-                            AgendaField(label: 'Senha', obscureText: true,),
+                            AgendaField(label: 'Senha', 
+                            controller: _passwordEC,
+                            validator: Validatorless.multiple([
+                              Validatorless.required('Senha Obrigatória'),
+                              Validatorless.min(6, 'Senha tem pelo menos 6 caracteres')
+                            ]),
+                            obscureText: true,),
                             const SizedBox(
                               height: 10,
                             ),
@@ -51,7 +88,14 @@ class LoginPage extends StatelessWidget {
                                   child: const Text('Esqueceu sua senha?'),
                                 ),
                                 ElevatedButton( 
-                                  onPressed: () {},                                 
+                                  onPressed: () {
+                                    final formValid = _formKey.currentState?.validate() ?? false;
+                                    if (formValid){
+                                      final email = _emailEC.text;
+                                      final password = _passwordEC.text;
+                                      context.read<LoginController>().loginWithEmailAndPassword(email, password);
+                                    }
+                                  },                                 
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),

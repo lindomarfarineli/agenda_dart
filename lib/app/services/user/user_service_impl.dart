@@ -4,14 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import './user_service.dart';
 
 class UserServiceImpl implements UserService {
-
   final UserRepository _userRepository;
 
-  UserServiceImpl({required UserRepository userRepository}) : _userRepository = userRepository;
-
-  
+  UserServiceImpl({required UserRepository userRepository})
+      : _userRepository = userRepository;
 
   @override
-  Future<User?> register(String email, String password) => _userRepository.register(email, password);
+  Future<User?> register(String email, String password) =>
+      _userRepository.register(email, password);
 
+  @override
+  Future<User?> loginWithEmailPassword(String email, String password) =>
+      _userRepository.loginWithEmailAndPassword(email, password);
 }

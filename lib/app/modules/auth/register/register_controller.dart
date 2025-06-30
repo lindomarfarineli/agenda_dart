@@ -11,16 +11,13 @@ class RegisterController extends DefaultChangeNotifier {
 
   Future<void> registerUser(String email, String password) async {
     try {
-
       showLoadingAndResetState();
       notifyListeners();
       final user = await _userService.register(email, password);
 
-      if (user != null) {
-        //sucesso
+      if (user != null) {        
         success();
-      } else {
-        //erro
+      } else {       
         setError('Erro ao registrar usuário!');
       }
     } on AuthException catch (e) {

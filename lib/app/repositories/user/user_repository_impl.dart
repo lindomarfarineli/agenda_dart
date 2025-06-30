@@ -1,6 +1,7 @@
 import 'package:agenda/app/exceptions/auth_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './user_repository.dart';
 
@@ -42,6 +43,33 @@ class UserRepositoryImpl implements UserRepository {
             message:
                 e.message ?? 'Erro ao registrar usuário, tente novamente...');
       }
+    }
+  }
+
+  @override
+  Future<User?> loginWithEmailAndPassword(String email, String password) async {
+    try {
+      final userCredencial = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return userCredencial.user;
+    } on PlatformException catch (e, s) {
+      debugPrint('$e');
+      debugPrint('$s');
+      throw AuthException(message: e.message ?? 'erro ao realizar login');
+    } on FirebaseAuthException catch (e, s) {      
+      debugPrint('$e');
+      debugPrint('$s');
+      print('*************************************************************************************');
+      print(e.code);
+      print('****************************************************************************************');
+      if (e.code == 'invalid-credential') {
+        print('*******************entrou aqui************************************');
+        //throw AuthException(message:'email já utilizado. Escolha outro email ou tente recuperar a senha!');
+        throw AuthException(message:'Login ou senha invállidos');
+      } else {
+        throw AuthException(message: e.message ?? 'erro ao realizar login');
+      }
+        
     }
   }
 }
