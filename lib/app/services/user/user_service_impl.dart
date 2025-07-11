@@ -16,4 +16,13 @@ class UserServiceImpl implements UserService {
   @override
   Future<User?> loginWithEmailPassword(String email, String password) =>
       _userRepository.loginWithEmailAndPassword(email, password);
+      
+  @override
+  Future<void> forgotPassword(String email) => _userRepository.forgotPassword(email);
+  
+  @override
+  Future<User?> googleSingnIn() => _userRepository.googleLogin();
+  
+  @override
+  Future<void> googleLogOut() => _userRepository.googleLogOut();
 }

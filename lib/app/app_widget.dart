@@ -4,8 +4,8 @@ import 'package:agenda/app/core/ui/ui_config.dart';
 import 'package:agenda/app/models/splash/splash_page.dart';
 import 'package:agenda/app/modules/auth/auth_module.dart';
 import 'package:agenda/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class _AppWidgetState extends State<AppWidget> {
    @override
    initState()  {
     super.initState();
-    final auth = FirebaseAuth.instance;
+    //final auth = FirebaseAuth.instance;
     WidgetsBinding.instance.addObserver(sqliteAdm);
    }
 
@@ -44,8 +44,7 @@ class _AppWidgetState extends State<AppWidget> {
        return MaterialApp(
         title: 'Agenda',
         debugShowCheckedModeBanner: false,  
-        theme: UiConfig.theme,      
-        initialRoute: '/login',
+        theme: UiConfig.theme,        
         routes: {
           ...AuthModule().routers
         },

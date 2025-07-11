@@ -10,6 +10,7 @@ class AgendaField extends StatelessWidget {
   final ValueNotifier<bool> obscureTextVN;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final FocusNode? focusNode;
 
   AgendaField({
     Key? key,
@@ -17,7 +18,8 @@ class AgendaField extends StatelessWidget {
     this.suffixIconButton,
     this.obscureText = false,
     this.controller,
-    this.validator
+    this.validator,
+    this.focusNode
   })  : assert(
           obscureText == true ? suffixIconButton == null : true,
           'obscureText e suffixIconButton não poder ser enviados ao mesmo tempo',
@@ -32,6 +34,7 @@ class AgendaField extends StatelessWidget {
       builder: (_, obscureTextValue, child) {
         return TextFormField(
           controller: controller,
+          focusNode: focusNode,
            validator: validator,
           decoration: InputDecoration(
             labelText: label,
@@ -49,7 +52,7 @@ class AgendaField extends StatelessWidget {
                         },
                         icon: !obscureTextValue
                             ? const Icon(
-                                Eye.eye_slash,
+                                Eye.eyeSlash,
                                 size: 15,
                               )
                             : const Icon(

@@ -1,6 +1,7 @@
 
 import 'package:agenda/app/core/helpers/new_page.dart';
 import 'package:agenda/app/core/notifier/default_listener_notifier.dart';
+import 'package:agenda/app/core/ui/messages.dart';
 import 'package:agenda/app/core/widget/agenda_field.dart';
 import 'package:agenda/app/core/widget/agenda_logo.dart';
 import 'package:agenda/app/modules/auth/login/login_controller.dart';
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
+  final _emailFocus = FocusNode();
   
 
   @override
@@ -29,8 +31,18 @@ class _LoginPageState extends State<LoginPage> {
     
     super.initState();
     DefaultListenerNotifier(changeNotifier: context.read<LoginController>()).
-    listener(context: context, succesCallback: ((notifier, listenerInstance) {
-      print('login efetuado com sucesso');
+    listener(
+      context: context,
+      everyCallback: (((notifier, listenerInstance) {
+        if(notifier is LoginController){
+          if (notifier.hasInfo){
+            Messages.of(context).showInfo(notifier.infoMessage!);
+          }
+        }
+      } 
+      )),
+      succesCallback: ((notifier, listenerInstance) {
+       debugPrint('login efetuado com sucesso');
     }),
     );
   }
@@ -63,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             AgendaField(label: 'Email',
                             controller: _emailEC,
+                            focusNode: _emailFocus,
                             validator: Validatorless.multiple([
                               Validatorless.required('E-mail Obrigatório'),
                               Validatorless.email('E-mail inválido')
@@ -84,7 +97,14 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    if (_emailEC.text.isNotEmpty ){
+                                       context.read<LoginController>().forgotPassword(_emailEC.text);
+                                    } else {
+                                      _emailFocus.requestFocus();
+                                      Messages.of(context).showError('Digite um email para recuperar a senha.');
+                                    }
+                                  },
                                   child: const Text('Esqueceu sua senha?'),
                                 ),
                                 ElevatedButton( 
@@ -134,7 +154,9 @@ class _LoginPageState extends State<LoginPage> {
                               child: SignInButton(
                                 Buttons.Google,
                                 text: 'continue com Google',
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.read<LoginController>().googleLogin();
+                                },
                                 padding: const EdgeInsets.all(5),
                                 shape: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(30),
