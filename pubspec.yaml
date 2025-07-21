@@ -89,7 +89,7 @@ flutter:
   fonts:
     - family: eye
       fonts:
-        - asset: assets/fonts/eye.ttf
+        - asset: assets/fonts/agendaIcons.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

@@ -1,4 +1,4 @@
-import 'package:agenda/app/core/ui/eye_icons.dart';
+import 'package:agenda/app/core/ui/agenda_icons.dart';
 import 'package:flutter/material.dart';
 
 
@@ -52,11 +52,11 @@ class AgendaField extends StatelessWidget {
                         },
                         icon: !obscureTextValue
                             ? const Icon(
-                                Eye.eyeSlash,
+                                AgendaIcons.eyeSlash,
                                 size: 15,
                               )
                             : const Icon(
-                                Eye.eye,
+                                AgendaIcons.eye,
                                 size: 15,
                               ),
                       )
