@@ -1,3 +1,4 @@
+import 'package:agenda/app/core/widget/agenda_logo.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
@@ -6,9 +7,11 @@ class SplashPage extends StatelessWidget {
 
    @override
    Widget build(BuildContext context) {
-       return Scaffold(
-           appBar: AppBar(title: const Text('Splash Page'),),
-           body: Container(),
+       return const Scaffold(
+           
+           body: Center(
+            child: AgendaLogo(),
+           ),
        );
   }
 }

@@ -1,8 +1,10 @@
 
 import 'package:agenda/app/core/database/sqlite_adm_connection.dart';
+import 'package:agenda/app/core/navigator/agenda_navigator.dart';
 import 'package:agenda/app/core/ui/ui_config.dart';
 import 'package:agenda/app/models/splash/splash_page.dart';
 import 'package:agenda/app/modules/auth/auth_module.dart';
+import 'package:agenda/app/modules/home/home_module.dart';
 import 'package:agenda/main.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 
@@ -44,9 +46,11 @@ class _AppWidgetState extends State<AppWidget> {
        return MaterialApp(
         title: 'Agenda',
         debugShowCheckedModeBanner: false,  
-        theme: UiConfig.theme,        
+        theme: UiConfig.theme,
+        navigatorKey: AgendaNavigator.navigatorKey,        
         routes: {
-          ...AuthModule().routers
+          ...AuthModule().routers,
+          ...HomeModule().routers
         },
         home: const SplashPage(),
        );
