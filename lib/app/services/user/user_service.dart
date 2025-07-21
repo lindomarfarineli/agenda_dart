@@ -5,5 +5,5 @@ abstract interface class UserService {
   Future<User?> loginWithEmailPassword(String email, String password);
   Future<void> forgotPassword(String email);
   Future<User?> googleSingnIn();
-  Future<void> googleLogOut();
+  Future<void> logout();
 }
